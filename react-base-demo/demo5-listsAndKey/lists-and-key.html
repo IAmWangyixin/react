@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8"/>
+        <script src="../build/react.development.js"></script>
+        <script src="../build/react-dom.development.js"></script>
+        <script src="../build/babel.min.js"></script>
+    </head>
+
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">
+            function ListItem(props) {
+                return <li>{props.value}</li>
+            }
+            function NumberList(props) {
+                const numbers = props.numbers; 
+                const listItems = numbers.map(num =>
+                    <ListItem key={num.toString()} value={num * 2} />
+                );
+                return (
+                    <ul>
+                        {listItems}
+                    </ul>
+                );
+            }
+            function Page(props) {
+                return (
+                    <div>
+                        <NumberList numbers={props.numbers} />
+                        <Blog posts={props.posts}/>
+                    </div>
+                )
+            }
+            function Blog(props) {
+                const sideBar = (
+                    <ul>
+                        {
+                            props.posts.map(post => 
+                                <li key={post.id}>{post.title}</li>
+                            )
+                        }
+                    </ul>
+                );
+                const content = (
+                    props.posts.map(post =>
+                        <div key={post.id}>
+                            <h1>{post.title}</h1>
+                            <p>{post.content}</p>
+                        </div>
+                    )
+                )
+                return (
+                    <div>
+                        {sideBar}  
+                        <hr />
+                        {content}
+                    </div>
+                )
+            }
+            const numbers = [1,2,3,4]; 
+            const posts = [
+                {id: '1', title: 'react', content: 'A javascript library for building user interfaces'},
+                {id: '2', title: 'react native', content: 'A framework for building native apps with React'}
+            ]
+            ReactDOM.render(
+                <Page numbers={numbers} posts={posts}/>,
+                document.getElementById('root')
+            )
+        </script>
+    </body>
+
+</html>

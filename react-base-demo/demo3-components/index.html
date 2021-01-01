@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <script src="../build/react.development.js"></script>
+        <script src="../build/react-dom.development.js"></script>
+        <script src="../build/babel.min.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">
+            class Clock extends React.Component {
+                constructor(props) {
+                    super(props);
+                    this.state = {
+                        date: new Date()
+                    };
+                    this.clickButton = this.clickButton.bind(this);
+                }
+                componentDidMount() {
+                    this.timerID = setInterval(
+                        () => this.tick(),
+                        1000
+                    );
+                }
+                componentWillUnmount() {
+                    clearInterval(this.timerID);
+                }
+                tick() {
+                    this.setState({
+                        date: new Date()
+                    });
+                }
+                handle(e) {
+                    console.log('this is:', this);
+                }
+                clickButton() {
+                    console.log('click button', this);
+                }
+                render() {
+                    return (
+                        <div>
+                            <p>It is {this.state.date.toLocaleTimeString()}</p>
+                            <button onClick={(e) => this.handle(e)}>click me</button>
+                            <button><a onClick={this.clickButton}>aaa</a></button>
+                        </div>
+                    )
+                }
+            }
+            function App() {
+                return(
+                    <div>
+                        <Clock />    
+                        <Clock />    
+                        <Clock />    
+                    </div>
+                )
+            }
+            ReactDOM.render(
+                <App />,
+                document.getElementById('root') 
+            )
+        </script>
+    </body>
+</html>

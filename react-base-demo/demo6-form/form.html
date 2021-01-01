@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <script src="../build/react.development.js"></script>
+        <script src="../build/react-dom.development.js"></script>
+        <script src="../build/babel.min.js"></script>
+    </head>
+
+    <body>
+        <div id="root"></div>
+        <script type="text/babel">
+            class NameForm extends React.Component {
+                constructor(props) {
+                    super(props);
+                    this.state = {
+                        value: ''
+                    };
+                    this.handleClick = this.handleClick.bind(this);
+                    this.handleChange = this.handleChange.bind(this);
+                    this.submitForm = this.submitForm.bind(this);
+                    this.input = React.createRef();
+                }
+                handleChange(e) {
+                    console.log(e.target, e.target.nodeType, e.target.nodeName, e.target.nodeValue);
+                    this.setState({value: e.target.value});
+                }
+                submitForm(event) {
+                    console.log(this.state.value);
+                    console.log(this.input.current.value);
+                    event.preventDefault();
+                }
+                handleClick(e) {
+                    console.log(e.target);
+                    console.log(e.target.nodeType, e.target.nodeName);
+                    console.log(e.target.firstChild, e.target.firstChild.nodeType, e.target.firstChild.nodeName, e.target.firstChild.nodeValue);
+                    console.log(e.target.innerHTML);
+                }
+                render() {
+                    return (
+                        <form onSubmit={this.submitForm}>
+                            <p onClick={this.handleClick} name="test">123</p>
+                            123
+                            <input type="text" value={this.state.value} onChange={this.handleChange} />
+                            <hr />
+                            <input type="text" value='hi' readOnly />
+                            <hr />
+                            <input type="text" value={null} />
+                            <hr />
+                            <input type="text" ref={this.input} />
+                            <hr />
+                            <button type="submit">submit</button>
+                        </form>
+                    )
+                }
+            }
+            ReactDOM.render(
+                <NameForm />,
+                document.getElementById('root')
+            )
+
+        </script>
+    </body>
+</html>
