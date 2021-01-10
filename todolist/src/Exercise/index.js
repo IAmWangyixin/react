@@ -1,5 +1,7 @@
-import { Component, Fragment } from "react";
-import TodoItem from "./TodoItem";
+import { Component, Fragment } from "react"
+import TodoItem from "./TodoItem"
+import axios from "axios";
+const {log} = console
 
 class TodoList extends Component {
   constructor(props) {
@@ -22,44 +24,61 @@ class TodoList extends Component {
 
   handleButtonClick() {
     this.setState((prevState) => ({
-      list: [prevState, this.state.inputValue],
+      list: [...prevState.list, this.state.inputValue],
       inputValue: ''
     }))
+    // console.log(this.ul.querySelectorAll('div').length) //总会比真实长度少1
   }
 
   handleItemDelete(index) {
     this.setState((prevState) => {
-      const list = [prevState.list]
+      const list = [...prevState.list]
       list.splice(index, 1)
-      return {list}
+      return { list }
     })
   }
 
   getTodoItem() {
     return this.state.list.map((item, index) => {
       return (
-        <TodoItem 
-          key={index}
-          content={item} 
+        <TodoItem
+          key={item}
+          content={item}
           index={index}
           deleteItem={this.handleItemDelete}
-          />
+        />
       )
     })
   }
+  componentWillReceiveProps(nextProps) {
+    log('parent componentWillReceiveProps:', nextProps)
+  }
+
+  shouldComponentUpdate(nextProps) {
+    log('parent shouldComponentUpdate:', nextProps)
+    return true;
+  }
+
+  componentDidMount() {
+    axios.get('api/todolist')
+    .then(() => {log('success')})
+    .catch(() => {log('error')})
+  }
 
   render() {
+    log('parent render')
+
     return (
       <Fragment>
         <div>
           <label htmlFor="insertArea">输入内容</label>
-          <input 
+          <input
             id="insertArea"
             value={this.state.inputValue}
             onChange={this.handleInputChange}
-            />
-          <button 
-            type="button" 
+          />
+          <button
+            type="button"
             onClick={this.handleButtonClick}>
             提交
           </button>
@@ -68,8 +87,8 @@ class TodoList extends Component {
           {this.getTodoItem()}
         </ul>
       </Fragment>
-    );
+    )
   }
 }
 
-export default TodoList;
+export default TodoList
