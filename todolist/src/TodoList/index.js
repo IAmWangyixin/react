@@ -1,26 +1,49 @@
-import React, {useState} from "react";
-import "antd/dist/antd.css"
-import { Input, Button, List } from "antd";
-import store from "../store";
-const {log} = console
+import { Fragment, useState } from 'react'
+import { Input, Button, List } from 'antd'
+import store from '../store'
+import 'antd/dist/antd.css';
 
+const { log } = console
 const TodoList = () => {
-    const [state] = useState(store.getState())
-    log(store.getState())
-    return (
-        <div style={{marginTop: '10px', marginLeft: '10px'}}>
-            <Input value={state.inputValue} placeholder='todo info' style={{width: '300px', marginRight: '10px'}} />
-            <Button type="primary">提交</Button>
-            <List
-                style={{marginTop: '10px', width: '300px'}}
-                bordered
-                dataSource={state.list}
-                renderItem={item => (
-                    <List.Item>{item}</List.Item>
-                )}
-                />
-        </div>
-    )
+  log(store.getState())
+  const [state, setState] = useState(store.getState())
+  const handleInputChange = (e) => {
+    const action = {
+      type: 'CHANGE_INPUT_VALUE',
+      value: e.target.value
+    }
+    store.dispatch(action)
+  }
+  const handleButtonClick = () => {
+    log('a')
+  }
+  const handleStoreChange = () => {
+    setState(store.getState())
+  }
+  store.subscribe(handleStoreChange)
+  return (
+    <Fragment>
+      <Input
+        placeholder='todo list'
+        value={state.inputValue}
+        onChange={handleInputChange}
+        style={{ width: '500px', margin: '10px' }}
+      />
+      <Button
+        type='primary'
+        onClick={handleButtonClick}>提交</Button>
+      <List
+        style={{ width: '500px', marginLeft: '10px' }}
+        bordered
+        dataSource={state.list}
+        renderItem={item => (
+          <List.Item>
+            {item}
+          </List.Item>
+        )}
+      />
+    </Fragment>
+  )
 }
 
 export default TodoList
