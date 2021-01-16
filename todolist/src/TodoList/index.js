@@ -1,14 +1,19 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import TodoListUI from './indexUI'
 import store from '../store'
 import {
   getInputChangeAction,
   getAddItemAction,
   getDeleteItemAction,
+  getTodoList,
 } from '../store/actionCreators'
+const { log } = console
 
-// const { log } = console
+const action = getTodoList()
+store.dispatch(action)
+
 const TodoList = () => {
+  log('todoList')
   const [state, setState] = useState(store.getState())
   const handleInputChange = (e) => {
     const action = getInputChangeAction(e.target.value)
