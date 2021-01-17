@@ -1,14 +1,6 @@
-import { applyMiddleware, createStore, compose } from 'redux'
-import TodoList from './todoList'
-import thunk from 'redux-thunk'
+import { createStore } from 'redux'
+import reducer from './reducer'
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
-
-const enhancer = composeEnhancers(
-  applyMiddleware(thunk),
-)
-
-const store = createStore(TodoList, enhancer)
+const store = createStore(reducer)
 
 export default store
